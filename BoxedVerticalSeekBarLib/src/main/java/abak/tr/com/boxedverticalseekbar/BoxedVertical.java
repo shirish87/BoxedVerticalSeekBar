@@ -5,6 +5,7 @@ package abak.tr.com.boxedverticalseekbar;
  * Modified by Nick Panagopoulos @npanagop on 12/05/2018.
  */
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -182,6 +183,7 @@ public class BoxedVertical extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @SuppressLint("CanvasSize")
     @Override
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();
@@ -195,7 +197,7 @@ public class BoxedVertical extends View {
         paint.setAntiAlias(true);
         canvas.drawRect(0, 0, scrWidth, scrHeight, paint);
 
-        canvas.drawLine(canvas.getWidth() / 2, canvas.getHeight(), canvas.getWidth() / 2, mProgressSweep, mProgressPaint);
+        canvas.drawLine(canvas.getWidth() / 2f, canvas.getHeight(), canvas.getWidth() / 2f, mProgressSweep, mProgressPaint);
 
         if (mImageEnabled && mDefaultImage != null && mMinImage != null && mMaxImage != null) {
             //If image is enabled, text will not be shown
@@ -231,7 +233,7 @@ public class BoxedVertical extends View {
 
     private void drawIcon(Bitmap bitmap, Canvas canvas) {
         bitmap = getResizedBitmap(bitmap, canvas.getWidth() / 2, canvas.getWidth() / 2);
-        canvas.drawBitmap(bitmap, null, new RectF((canvas.getWidth() / 2) - (bitmap.getWidth() / 2), canvas.getHeight() - bitmap.getHeight(), (canvas.getWidth() / 3) + bitmap.getWidth(), canvas.getHeight()), null);
+        canvas.drawBitmap(bitmap, null, new RectF((canvas.getWidth() / 2f) - (bitmap.getWidth() / 2f), canvas.getHeight() - bitmap.getHeight(), (canvas.getWidth() / 3f) + bitmap.getWidth(), canvas.getHeight()), null);
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
@@ -383,6 +385,16 @@ public class BoxedVertical extends View {
 
     public void setEnabled(boolean enabled) {
         this.mEnabled = enabled;
+    }
+
+    public int getMin() {
+        return mMin;
+    }
+
+    public void setMin(int mMin) {
+        if (mMin >= mMax)
+            throw new IllegalArgumentException("Min should be less than max");
+        this.mMin = mMin;
     }
 
     public int getMax() {
